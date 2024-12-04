@@ -1,37 +1,39 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
     <title>Word Guess Game</title>
 </head>
 <body>
     <h1>Word Guess Game</h1>
-    <form id="gameForm" action="https://us-central1-final-try-2.cloudfunctions.net/word_guess_game" method="get">
-        <label for="choice">Choose an option:</label><br>
-        <select name="choice" id="choice">
-            <option value="1">Choose a word</option>
-            <option value="2">Train the AI</option>
-            <option value="3">Exit the game</option>
-        </select><br><br>
-
-        <div id="wordInput" style="display: none;">
-            <label for="word">Enter a 5-letter word:</label><br>
-            <input type="text" id="word" name="word" maxlength="5"><br><br>
-        </div>
-
-        <div id="roundsInput" style="display: none;">
-            <label for="rounds">Number of training rounds:</label><br>
-            <input type="number" id="rounds" name="rounds" min="1"><br><br>
-        </div>
+    <form method="get" action="https://us-central1-final-try-2.cloudfunctions.net/word_guess_game">
+        <label for="choice">Enter your choice (1, 2, or 3):</label>
+        <input type="text" id="choice" name="choice" required placeholder="1, 2, or 3">
+        
+        <br><br>
+        <div id="additionalInputs"></div>
 
         <button type="submit">Submit</button>
     </form>
 
     <script>
-        document.getElementById('choice').addEventListener('change', function() {
-            const choice = this.value;
-            document.getElementById('wordInput').style.display = choice === '1' ? 'block' : 'none';
-            document.getElementById('roundsInput').style.display = choice === '2' ? 'block' : 'none';
+        document.getElementById('choice').addEventListener('input', function() {
+            var choice = this.value.trim();
+            var additionalInputs = document.getElementById('additionalInputs');
+            additionalInputs.innerHTML = ''; // Clear existing inputs
+
+            if (choice === '1') {
+                // Add a text box for the user to enter a word
+                additionalInputs.innerHTML = `
+                    <label for="word">Enter a 5-letter word:</label>
+                    <input type="text" id="word" name="word" required placeholder="Enter a word">
+                `;
+            } else if (choice === '2') {
+                // Add a text box for the user to enter the number of rounds
+                additionalInputs.innerHTML = `
+                    <label for="rounds">Enter the number of rounds:</label>
+                    <input type="number" id="rounds" name="rounds" min="1" required placeholder="Enter rounds">
+                `;
+            }
         });
     </script>
 </body>
